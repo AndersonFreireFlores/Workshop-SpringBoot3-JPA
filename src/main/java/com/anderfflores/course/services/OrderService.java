@@ -1,7 +1,7 @@
 package com.anderfflores.course.services;
 
 import com.anderfflores.course.entities.Order;
-import com.anderfflores.course.repositories.OrderRepositories;
+import com.anderfflores.course.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
-    private OrderRepositories repository;
+    private OrderRepository repository;
     public List<Order> findAll(){
         return repository.findAll();
     }
