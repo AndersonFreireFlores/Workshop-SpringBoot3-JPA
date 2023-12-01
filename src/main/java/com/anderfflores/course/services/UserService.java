@@ -2,6 +2,7 @@ package com.anderfflores.course.services;
 
 import com.anderfflores.course.entities.User;
 import com.anderfflores.course.repositories.UserRepository;
+import com.anderfflores.course.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById (Long id){
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert (User obj){
