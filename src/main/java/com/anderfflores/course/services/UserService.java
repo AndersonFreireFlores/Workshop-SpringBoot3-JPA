@@ -2,9 +2,12 @@ package com.anderfflores.course.services;
 
 import com.anderfflores.course.entities.User;
 import com.anderfflores.course.repositories.UserRepository;
+import com.anderfflores.course.resources.exceptions.DatabaseException;
 import com.anderfflores.course.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +31,14 @@ public class UserService {
         return repository.save(obj);
     }
 
-    public void delete (Long id){
-        repository.deleteById(id);
+    public void delete (Long id) {
+        try {
+            repository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(e.getMessage());
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public User update(Long id, User obj) {
